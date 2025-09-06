@@ -105,6 +105,27 @@ inputValor.addEventListener('keydown', (e) => {
   }
 });
 
+// === Função para formatar moedas ===
+function formatarMoeda(valor, moeda) {
+  let locale = "pt-BR";
+  if (moeda === "USD") locale = "en-US";
+  if (moeda === "EUR") locale = "de-DE"; 
+
+  if (moeda === "BTC") {
+    // BTC mostra número + BTC no final
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 6,
+      maximumFractionDigits: 6
+    }).format(valor) + " BTC";
+  }
+
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: moeda,
+    minimumFractionDigits: 2
+  }).format(valor);
+}
+
 // === Conversão ao clicar no botão ===
 botao.addEventListener('click', () => {
   botao.classList.add('clicked');
@@ -131,9 +152,9 @@ botao.addEventListener('click', () => {
 
   const resultado = valor * taxa;
 
-  // Atualiza resultados
-  realResultado.textContent = `${valor.toFixed(2)} ${de}`;
-  valorResultado.textContent = `${resultado.toFixed(6)} ${para}`;
+  // Atualiza resultados já formatados
+  realResultado.textContent = formatarMoeda(valor, de);
+  valorResultado.textContent = formatarMoeda(resultado, para);
   realResultado.classList.add('visible');
   valorResultado.classList.add('visible');
 
