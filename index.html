@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Oswald:wght@200..700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>Conversor de Moedas</title>
+</head>
+
+<body>
+  <img class="logo" src="./img/logo.png" alt="logo-converter" />
+
+  <main>
+    <section>
+      <div class="container-1">
+        <!-- Dropdown De -->
+        <p>Converter <span>de</span></p>
+        <div class="dropdown" data-dropdown="de">
+          <input type="text" class="dropdown-search" placeholder="Escolha a moeda..." readonly />
+          <div class="dropdown-options">
+            <div class="dropdown-option" data-value="BRL">BRL - Real Brasileiro</div>
+            <div class="dropdown-option" data-value="USD">USD - Dólar Americano</div>
+            <div class="dropdown-option" data-value="EUR">EUR - Euro</div>
+            <div class="dropdown-option" data-value="BTC">BTC - Bitcoin</div>
+          </div>
+        </div>
+        <input type="hidden" id="moedaDe" value="BRL">
+
+        <!-- Input valor -->
+        <p>Valor:</p>
+        <input type="text" id="valorDe" placeholder="Digite o valor" />
+
+        <!-- Dropdown Para -->
+        <p>Converter <span>para</span></p>
+        <div class="dropdown" data-dropdown="para">
+          <input type="text" class="dropdown-search" placeholder="Escolha a moeda..." readonly />
+          <div class="dropdown-options">
+            <div class="dropdown-option" data-value="BRL">BRL - Real Brasileiro</div>
+            <div class="dropdown-option" data-value="USD">USD - Dólar Americano</div>
+            <div class="dropdown-option" data-value="EUR">EUR - Euro</div>
+            <div class="dropdown-option" data-value="BTC">BTC - Bitcoin</div>
+          </div>
+        </div>
+        <input type="hidden" id="moedaPara" value="USD">
+
+        <button class="convert-button">Converter</button>
+      </div>
+
+      <!-- Resultados -->
+      <div class="container-2">
+        <div class="container-2-1">
+          <img class="brasil-c1"src="./img/brasil.png" alt="bandeira-brasil" />
+          <img class="eua-c1" src="./img/eua.png" alt="bandeira-eua" />
+          <img class="euro-c1" src="./img/euro.png" alt="bandeira-euro" />
+          <img class="bitcoin-c1" src="./img/bitcoin.png" alt="bandeira-bitcoin" />
+          <p class="p-real">Real</p>
+          <p class="p-dolar">Dólar Americano</p>
+          <p class="p-euro">Euro</p>
+          <p class="p-bitcoin">Bitcoin</p>
+          <p class="real-resultado"></p>
+        </div>
+        <div class="seta">
+          <img class="img-vector" src="./img/vector.png" alt="seta" />
+        </div>
+        <div class="container-2-2">
+          <img class="eua-c2"src="./img/eua.png" alt="bandeira-eua" />
+          <img class="brasil-c2" src="./img/brasil.png" alt="bandeira-brasil" />
+          <img class="euro-c2" src="./img/euro.png" alt="bandeira-euro" />
+          <img class="bitcoin-c2" src="./img/bitcoin.png" alt="bandeira-bitcoin" />
+          <p class="p2-dolar">Dólar Americano</p>
+          <p class="p2-real">Real</p>
+          <p class="p2-euro">Euro</p>
+          <p class="p2-bitcoin">Bitcoin</p>
+          <p class="valor-resultado"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+<script src="./scripts.js"></script>
+
+</html>
