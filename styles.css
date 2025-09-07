@@ -40,8 +40,7 @@ section {
   gap: 20px;
 }
 
-/* Container 1 */
-.container-1 {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,17 +48,16 @@ section {
   width: 100%;
 }
 
-.container-1 p {
+.container p {
   color: #777;
   font-size: 0.8rem;
   font-weight: 400;
 }
 
-.container-1 p span {
+.container p span {
   font-weight: 700;
 }
 
-/* Dropdowns */
 .dropdown {
   position: relative;
   width: 100%;
@@ -141,7 +139,7 @@ section {
 }
 
 /* Container 2 - Resultados */
-.container-2 {
+.box-from {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -152,28 +150,28 @@ section {
   gap: 15px;
 }
 
-.container-2-1,
-.container-2-2 {
+.convert-box-from,
+.converted-box-to {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
 }
 
-.container-2-1 img,
-.container-2-2 img {
+.img-box-from,
+.img-box-to img {
   width: 42px;
   height: 42px;
 }
 
-.container-2-1 p,
-.container-2-2 p {
+.value-text-from,
+.value-text-to p {
   color: #777;
   font-size: 0.85rem;
 }
 
-.real-resultado,
-.valor-resultado {
+.value-box-from,
+.value-box-to {
   font-size: 1.2rem;
   font-weight: 700;
   color: #444;
@@ -184,38 +182,6 @@ section {
   height: 42px;
 }
 
-.brasil-c2,
-.eua-c1,
-.euro-c1,
-.euro-c2,
-.bitcoin-c1,
-.bitcoin-c2,
-.p2-real,
-.p-dolar,
-.p-euro,
-.p2-euro,
-.p-bitcoin,
-.p2-bitcoin {
-  display: none;
-}
-
-.container-2-1 img,
-.container-2-2 img,
-.container-2-1 p,
-.container-2-2 p {
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  display: block; /* sempre ocupa espaço */
-  position: absolute; /* para sobreposição */
-}
-
-.container-2-1 img.visible,
-.container-2-2 img.visible,
-.container-2-1 p.visible,
-.container-2-2 p.visible {
-  opacity: 1;
-  position: relative; /* volta à posição normal */
-}
 
 /* Media Query */
 @media (max-width: 400px) {

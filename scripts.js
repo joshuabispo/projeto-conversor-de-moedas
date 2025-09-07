@@ -1,18 +1,42 @@
+// === Dados das moedas e imagens ===
+const moedas = {
+  BRL: { nome: "Real", img: "./img/brasil.png" },
+  USD: { nome: "Dólar Americano", img: "./img/eua.png" },
+  EUR: { nome: "Euro", img: "./img/euro.png" },
+  GBP: { nome: "Libra Estalina", img: "./img/libra.png" },
+  BTC: { nome: "Bitcoin", img: "./img/bitcoin.png" }
+};
+
 // === Elementos principais ===
 const botao = document.querySelector('.convert-button');
-const logo = document.querySelector('.logo');
 const inputValor = document.getElementById('valorDe');
-const realResultado = document.querySelector('.real-resultado');
-const valorResultado = document.querySelector('.valor-resultado');
+const dropdowns = document.querySelectorAll('.dropdown');
 
-// === Valores iniciais dos dropdowns ===
+const imgFrom = document.querySelector('.img-box-from');
+const textFrom = document.querySelector('.value-text-from');
+const valueFrom = document.querySelector('.value-box-from');
+
+const imgTo = document.querySelector('.img-box-to');
+const textTo = document.querySelector('.value-text-to');
+const valueTo = document.querySelector('.value-box-to');
+
+const logo = document.querySelector('.logo');
+
+// === Inicializa dropdowns e valores escondidos ===
 document.getElementById('moedaDe').value = 'BRL';
 document.querySelector('[data-dropdown="de"] .dropdown-search').value = 'BRL - Real Brasileiro';
 document.getElementById('moedaPara').value = 'USD';
 document.querySelector('[data-dropdown="para"] .dropdown-search').value = 'USD - Dólar Americano';
 
+// === Função para resetar input e resultados ===
+function resetarValores() {
+  inputValor.value = "";
+  valueFrom.textContent = "0.00";
+  valueTo.textContent = "0.00";
+}
+
 // === Dropdown funcional ===
-document.querySelectorAll('.dropdown').forEach(dropdown => {
+dropdowns.forEach(dropdown => {
   const input = dropdown.querySelector('.dropdown-search');
   const options = dropdown.querySelector('.dropdown-options');
   const hiddenId = dropdown.dataset.dropdown === 'de' ? 'moedaDe' : 'moedaPara';
@@ -28,6 +52,7 @@ document.querySelectorAll('.dropdown').forEach(dropdown => {
       input.value = option.textContent.trim();
       hiddenInput.value = option.dataset.value;
       options.style.display = 'none';
+      resetarValores();       // Limpa input e resultados
       atualizarVisualizacao();
       bloquearMesmaMoeda();
     });
@@ -39,129 +64,105 @@ document.addEventListener('click', () => {
   document.querySelectorAll('.dropdown-options').forEach(opt => opt.style.display = 'none');
 });
 
-// === Atualiza imagens e parágrafos com fade ===
+// === Atualiza imagens e nomes nas caixas ===
 function atualizarVisualizacao() {
   const de = document.getElementById('moedaDe').value;
   const para = document.getElementById('moedaPara').value;
 
-  // Remove visible de todos
-  document.querySelectorAll('.container-2-1 img, .container-2-2 img, .container-2-1 p, .container-2-2 p')
-    .forEach(el => el.classList.remove('visible'));
+  imgFrom.src = moedas[de].img;
+  textFrom.textContent = moedas[de].nome;
 
-  // Lado "De"
-  if (de === 'BRL') { document.querySelector('.brasil-c1').classList.add('visible'); document.querySelector('.p-real').classList.add('visible'); }
-  else if (de === 'USD') { document.querySelector('.eua-c1').classList.add('visible'); document.querySelector('.p-dolar').classList.add('visible'); }
-  else if (de === 'EUR') { document.querySelector('.euro-c1').classList.add('visible'); document.querySelector('.p-euro').classList.add('visible'); }
-  else if (de === 'BTC') { document.querySelector('.bitcoin-c1').classList.add('visible'); document.querySelector('.p-bitcoin').classList.add('visible'); }
-
-  // Lado "Para"
-  if (para === 'BRL') { document.querySelector('.brasil-c2').classList.add('visible'); document.querySelector('.p2-real').classList.add('visible'); }
-  else if (para === 'USD') { document.querySelector('.eua-c2').classList.add('visible'); document.querySelector('.p2-dolar').classList.add('visible'); }
-  else if (para === 'EUR') { document.querySelector('.euro-c2').classList.add('visible'); document.querySelector('.p2-euro').classList.add('visible'); }
-  else if (para === 'BTC') { document.querySelector('.bitcoin-c2').classList.add('visible'); document.querySelector('.p2-bitcoin').classList.add('visible'); }
-
-  // Atualiza classe do input valor
-  inputValor.classList.remove('usd','eur','btc','brl');
-  inputValor.classList.add(para.toLowerCase());
+  imgTo.src = moedas[para].img;
+  textTo.textContent = moedas[para].nome;
 }
 
-// === Impede selecionar mesma moeda ===
+// === Impede selecionar a mesma moeda nos dois dropdowns ===
 function bloquearMesmaMoeda() {
   const de = document.getElementById('moedaDe').value;
   const para = document.getElementById('moedaPara').value;
 
-  document.querySelectorAll('[data-dropdown="de"] .dropdown-option').forEach(opt => {
-    opt.style.display = (opt.dataset.value === para) ? 'none' : 'flex';
-  });
-  document.querySelectorAll('[data-dropdown="para"] .dropdown-option').forEach(opt => {
-    opt.style.display = (opt.dataset.value === de) ? 'none' : 'flex';
-  });
+  document.querySelectorAll('[data-dropdown="de"] .dropdown-option')
+    .forEach(opt => opt.style.display = (opt.dataset.value === para) ? 'none' : 'flex');
+  document.querySelectorAll('[data-dropdown="para"] .dropdown-option')
+    .forEach(opt => opt.style.display = (opt.dataset.value === de) ? 'none' : 'flex');
 }
 
-// === Validação do input para impedir letras e múltiplos pontos/virgulas ===
+// === Validação do input ===
 inputValor.addEventListener('input', () => {
   let valor = inputValor.value;
-
-  // Remove tudo que não seja número, ponto ou vírgula
-  valor = valor.replace(/[^0-9.,]/g, '');
-
-  // Substitui vírgula por ponto
-  valor = valor.replace(',', '.');
-
-  // Permite apenas um ponto decimal
+  valor = valor.replace(/[^0-9.,]/g, '').replace(',', '.');
   const partes = valor.split('.');
-  if (partes.length > 2) {
-    valor = partes[0] + '.' + partes.slice(1).join('');
-  }
-
+  if (partes.length > 2) valor = partes[0] + '.' + partes.slice(1).join('');
   inputValor.value = valor;
 });
 
-// Bloqueia letras antes de aparecer no input
-inputValor.addEventListener('keydown', (e) => {
-  const permitidos = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', '.', ','];
-  if (!/[0-9]/.test(e.key) && !permitidos.includes(e.key)) {
-    e.preventDefault();
-  }
+inputValor.addEventListener('keydown', e => {
+  const permitidos = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','.','',','];
+  if (!/[0-9]/.test(e.key) && !permitidos.includes(e.key)) e.preventDefault();
 });
 
 // === Função para formatar moedas ===
 function formatarMoeda(valor, moeda) {
+  if (moeda === "BTC") return valor.toFixed(6) + " BTC";
+
   let locale = "pt-BR";
   if (moeda === "USD") locale = "en-US";
-  if (moeda === "EUR") locale = "de-DE"; 
+  if (moeda === "EUR") locale = "de-DE";
+  if (moeda === "GBP") locale = "en-GB";
 
-  if (moeda === "BTC") {
-    // BTC mostra número + BTC no final
-    return new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 6,
-      maximumFractionDigits: 6
-    }).format(valor) + " BTC";
+  return new Intl.NumberFormat(locale, { style: "currency", currency: moeda, minimumFractionDigits: 2 }).format(valor);
+}
+
+// === Função para pegar taxa em tempo real ===
+async function pegarTaxa(de, para) {
+  try {
+    if (de === "BTC" || para === "BTC") {
+      const moeda = de === "BTC" ? para.toLowerCase() : de.toLowerCase();
+      const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${moeda}`);
+      const data = await response.json();
+
+      if (de === "BTC") {
+        // BTC → moeda fiat
+        return data.bitcoin[moeda]; 
+      } else {
+        // moeda fiat → BTC
+        return 1 / data.bitcoin[moeda];
+      }
+    } else {
+      const response = await fetch(`https://open.er-api.com/v6/latest/${de}`);
+      const data = await response.json();
+      return data.rates[para];
+    }
+  } catch (error) {
+    console.error("Erro ao buscar taxa:", error);
+    return null;
   }
-
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: moeda,
-    minimumFractionDigits: 2
-  }).format(valor);
 }
 
 // === Conversão ao clicar no botão ===
-botao.addEventListener('click', () => {
-  botao.classList.add('clicked');
-
+botao.addEventListener('click', async () => {
   const valor = parseFloat(inputValor.value);
+  if (isNaN(valor) || valor <= 0) return;
+
+  botao.classList.add('clicked');
   const de = document.getElementById('moedaDe').value;
   const para = document.getElementById('moedaPara').value;
 
-  if (isNaN(valor)) {
-    alert("Digite um valor válido!");
+  const taxa = await pegarTaxa(de, para);
+  if (!taxa) {
     botao.classList.remove('clicked');
-    return;
+    return alert("Não foi possível obter a taxa de câmbio.");
   }
-
-  // Taxas fictícias
-  let taxa = 1;
-  if (de === 'BRL' && para === 'USD') taxa = 0.20;
-  else if (de === 'BRL' && para === 'EUR') taxa = 0.19;
-  else if (de === 'BRL' && para === 'BTC') taxa = 0.000019;
-  else if (de === 'USD' && para === 'BRL') taxa = 5.0;
-  else if (de === 'EUR' && para === 'BRL') taxa = 5.2;
-  else if (de === 'BTC' && para === 'BRL') taxa = 52000;
-  else if (de === para) taxa = 1;
 
   const resultado = valor * taxa;
 
-  // Atualiza resultados já formatados
-  realResultado.textContent = formatarMoeda(valor, de);
-  valorResultado.textContent = formatarMoeda(resultado, para);
-  realResultado.classList.add('visible');
-  valorResultado.classList.add('visible');
+  valueFrom.textContent = formatarMoeda(valor, de);
+  valueTo.textContent = formatarMoeda(resultado, para);
 
   setTimeout(() => botao.classList.remove('clicked'), 500);
 });
 
-// === Logo animada girando suavemente ===
+// === Animação da logo ===
 let grau = 0, passo = 0.2, limite = 15, indoParaDireita = true;
 function animarLogo() {
   if (indoParaDireita) {
@@ -179,3 +180,4 @@ animarLogo();
 // Inicializa visualização e bloqueio de moedas
 atualizarVisualizacao();
 bloquearMesmaMoeda();
+resetarValores();
